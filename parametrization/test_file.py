@@ -10,21 +10,14 @@ def is_uuid(s):
     return True
 
 
-def test_is_uuid_32_chars():
-    assert is_uuid('cde0fd2d72b14135a62e127dd0683218')
+@pytest.mark.parametrize('uuid_', ['cde0fd2d72b14135a62e127dd0683218',
+                                   str(uuid.uuid1()),
+                                   str(uuid.uuid4())])
+def test_is_uuid(uuid_):
+    assert is_uuid(uuid_)
 
 
-def test_is_uuid_v1():
-    assert is_uuid(str(uuid.uuid1()))
-
-
-def test_is_uuid_v4():
-    assert is_uuid(str(uuid.uuid4()))
-
-
-def test_is_uuid_invalid_32_non_hex():
-    assert not is_uuid('z' * 32)
-
-
-def test_is_uuid_invalid_non_32():
-    assert not is_uuid('not a uuid')
+@pytest.mark.parametrize('uuid_', ['z' * 32,
+                                   'not a uuid'])
+def test_is_uuid_invalid(uuid_):
+    assert not is_uuid(uuid_)
